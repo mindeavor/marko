@@ -97,7 +97,7 @@ exports.install = function(options) {
         // Resolve the appropriate compiler relative to the location of the
         // marko template file on disk using the "resolve-from" module.
         var dirname = path.dirname(filename);
-        var markoCompilerModulePath = resolveFrom(dirname, 'marko/compiler');
+        var markoCompilerModulePath = resolveFrom(dirname, 'marko-v2/compiler');
         var markoCompiler = require(markoCompilerModulePath);
 
         // Now use the appropriate Marko compiler to compile the Marko template

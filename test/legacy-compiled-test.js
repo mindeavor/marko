@@ -16,7 +16,7 @@ describe('marko/legacy-compiled' , function() {
 
     it('should allow an exports.create template to be loaded', function() {
 
-        var template = require('marko').load({
+        var template = require('marko-v2').load({
             create: function(__helpers) {
               var escapeXml = __helpers.x;
 
@@ -49,19 +49,19 @@ describe('marko/legacy-compiled' , function() {
             }
         };
 
-        var template1 = require('marko').load(compiled);
+        var template1 = require('marko-v2').load(compiled);
 
         var output = template1.renderSync({ name: 'Frank' });
         expect(output).to.equal('Hello Frank!');
 
-        var template2 = require('marko').load(compiled);
+        var template2 = require('marko-v2').load(compiled);
 
         expect(template1).to.equal(template2);
     });
 
     it('should allow a module.exports = function create() {} template to be loaded', function() {
 
-        var template = require('marko').load(function create(__helpers) {
+        var template = require('marko-v2').load(function create(__helpers) {
           var escapeXml = __helpers.x;
 
           return function render(data, out) {
@@ -90,12 +90,12 @@ describe('marko/legacy-compiled' , function() {
           };
         };
 
-        var template1 = require('marko').load(compiled);
+        var template1 = require('marko-v2').load(compiled);
 
         var output = template1.renderSync({ name: 'Frank' });
         expect(output).to.equal('Hello Frank!');
 
-        var template2 = require('marko').load(compiled);
+        var template2 = require('marko-v2').load(compiled);
 
         expect(template1).to.equal(template2);
     });
