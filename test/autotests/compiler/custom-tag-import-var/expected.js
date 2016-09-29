@@ -18,4 +18,12 @@ function create(__helpers) {
   };
 }
 
-(module.exports = require("marko").c(__filename)).c(create);
+(module.exports = require("marko").c(__filename)).c(create, {
+    tags: [
+        {
+            type: "custom",
+            name: "test-import-var",
+            renderer: require.resolve("./tags/test-import-var/renderer")
+          }
+      ]
+  });

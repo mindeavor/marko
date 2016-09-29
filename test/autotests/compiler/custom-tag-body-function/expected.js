@@ -16,4 +16,12 @@ function create(__helpers) {
   };
 }
 
-(module.exports = require("marko").c(__filename)).c(create);
+(module.exports = require("marko").c(__filename)).c(create, {
+    tags: [
+        {
+            type: "custom",
+            name: "test-body-function",
+            renderer: require.resolve("./tags/test-body-function/renderer")
+          }
+      ]
+  });

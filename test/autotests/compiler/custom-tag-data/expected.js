@@ -27,4 +27,12 @@ function create(__helpers) {
   };
 }
 
-(module.exports = require("marko").c(__filename)).c(create);
+(module.exports = require("marko").c(__filename)).c(create, {
+    tags: [
+        {
+            type: "custom",
+            name: "custom-tag-data",
+            renderer: require.resolve("./custom-tag-data-tag")
+          }
+      ]
+  });

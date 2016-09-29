@@ -311,10 +311,14 @@ class CustomTag extends HtmlElement {
         }
 
         var finalNode;
+        var meta = builder.objectExpression([
+            builder.property('type', builder.literal('custom')),
+            builder.property('name', builder.literal(tagDef.name))
+        ]);
 
         if (tagDef.template) {
             let templateRequirePath = context.getRequirePath(tagDef.template);
-            let templateVar = context.importTemplate(templateRequirePath);
+            let templateVar = context.importTemplate(templateRequirePath, meta);
             let renderMethod = builder.memberExpression(templateVar, builder.identifier('render'));
             let renderArgs = [ inputProps, 'out' ];
             let renderFunctionCall = builder.functionCall(renderMethod, renderArgs);
@@ -325,6 +329,15 @@ class CustomTag extends HtmlElement {
             var loadTagArgs = [
                 requireRendererFunctionCall // The first param is the renderer
             ];
+
+            if(rendererRequirePath) {
+                meta.properties.push(
+                    builder.property('renderer',
+                        builder.requireResolve(builder.literal(rendererRequirePath))
+                    )
+                );
+                codegen.pushMeta('tags', meta, true);
+            }
 
             if (isNestedTag || hasNestedTags) {
                 if (isNestedTag) {

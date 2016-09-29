@@ -20,9 +20,12 @@ module.exports = function codeGenerator(el, codegen) {
 
     let templatePath = args[0];
     let templateVar;
+    let meta = builder.objectExpression([
+        builder.property('type', builder.literal('include'))
+    ]);
 
     if (templatePath.type === 'Literal') {
-        templateVar = codegen.context.importTemplate(templatePath.value);
+        templateVar = codegen.context.importTemplate(templatePath.value, meta);
     } else {
         templateVar = templatePath;
     }

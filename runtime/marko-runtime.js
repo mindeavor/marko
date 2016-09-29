@@ -89,8 +89,9 @@ Template.prototype = {
      * @private
      * @param  {Function(__helpers)} createFunc The function used to produce the render(data, out) function.
      */
-    c: function(createFunc) {
+    c: function(createFunc, meta) {
         this._ = createFunc(helpers);
+        this.meta = meta || {};
     },
     renderSync: function(data) {
         var localData = data || {};

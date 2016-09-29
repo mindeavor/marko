@@ -29,4 +29,12 @@ function create(__helpers) {
   };
 }
 
-(module.exports = require("marko").c(__filename)).c(create);
+(module.exports = require("marko").c(__filename)).c(create, {
+    tags: [
+        {
+            type: "custom",
+            name: "test-nested-tags-overlay",
+            renderer: require.resolve("./tags/test-nested-tags-overlay/renderer")
+          }
+      ]
+  });

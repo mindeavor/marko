@@ -148,6 +148,14 @@ class Generator {
         this.context.addStaticCode(code);
     }
 
+    pushMeta(key, value, unique) {
+        this.context.pushMeta(key, value, unique);
+    }
+
+    setMeta(key, value) {
+        this.context.setMeta(key, value);
+    }
+
     getEscapeXmlAttrVar() {
         return this.context.getEscapeXmlAttrVar();
     }

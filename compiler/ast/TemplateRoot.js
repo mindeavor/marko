@@ -29,12 +29,15 @@ class TemplateRoot extends Node {
         var builder = codegen.builder;
         var program = builder.program;
         var functionDeclaration = builder.functionDeclaration;
-
+        var functionCall = builder.functionCall;
+        var memberExpression = builder.memberExpression;
         var returnStatement = builder.returnStatement;
+        var code = builder.code;
         var slot = builder.slot;
 
         var staticsSlot = slot();
         var varsSlot = slot();
+        var createSlot = slot();
         varsSlot.noOutput = true;
 
         body = [ varsSlot ].concat(body.items);
@@ -46,7 +49,7 @@ class TemplateRoot extends Node {
                 returnStatement(
                     functionDeclaration('render', ['data', 'out'], body))
             ]),
-            '(module.exports = require("marko").c(__filename)).c(create)'
+            createSlot
         ]);
 
         codegen.generateCode(outputNode);
@@ -65,6 +68,16 @@ class TemplateRoot extends Node {
 
         var vars = context.getVars();
         varsSlot.setContent(builder.vars(createVarsArray(vars)));
+
+        var exports = code('(module.exports = require("marko").c(__filename))');
+        var createFunction = memberExpression(exports, 'c');
+        var createArgs = ['create'];
+
+        if(context.meta) {
+            createArgs.push(context.meta);
+        }
+
+        createSlot.setContent(functionCall(createFunction, createArgs));
     }
 
     toJSON(prettyPrinter) {

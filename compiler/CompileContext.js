@@ -72,6 +72,7 @@ class CompileContext {
         this._macros = null;
         this._preserveWhitespace = null;
         this._preserveComments = null;
+        this.meta = null;
     }
 
     getPosInfo(pos) {
@@ -374,7 +375,7 @@ class CompileContext {
         return this._macros.registerMacro(name, params);
     }
 
-    importTemplate(relativePath) {
+    importTemplate(relativePath, tagMeta) {
         ok(typeof relativePath === 'string', '"path" should be a string');
         var builder = this.builder;
 
@@ -387,7 +388,50 @@ class CompileContext {
         var requireResolveTemplate = requireResolve(builder, builder.literal(relativePath));
         var loadFunctionCall = builder.functionCall(loadTemplateVar, [ requireResolveTemplate ]);
         var templateVar = this.addStaticVar(removeExt(relativePath), loadFunctionCall);
+
+        if(!tagMeta) {
+            tagMeta = builder.objectExpression();
+        }
+
+        tagMeta.properties.push(builder.property('template', requireResolveTemplate));
+        this.pushMeta('tags', tagMeta, true);
+
         return templateVar;
+    }
+
+    pushMeta(key, value, unique) {
+        var builder = this.builder;
+        var property;
+
+        if(!this.meta) {
+            this.meta = builder.objectExpression();
+        }
+
+        property = this.meta.properties.find(p => p.key.name === key);
+
+        if(!property) {
+            property = builder.property(key, builder.arrayExpression(value));
+            this.meta.properties.push(property);
+        } else if(!unique || !property.value.elements.some(e => e.toString() === value.toString())) {
+            property.value.elements.push(value);
+        }
+    }
+
+    setMeta(key, value) {
+        var builder = this.builder;
+        var property;
+
+        if(!this.meta) {
+            this.meta = builder.objectExpression();
+        }
+
+        property = this.meta.properties.find(p => p.key.value === key);
+
+        if(!property) {
+            property = builder.property(key, value);
+        } else {
+            property.value = value;
+        }
     }
 
     setPreserveWhitespace(preserveWhitespace) {

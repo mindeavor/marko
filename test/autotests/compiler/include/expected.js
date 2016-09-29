@@ -11,4 +11,11 @@ function create(__helpers) {
   };
 }
 
-(module.exports = require("marko").c(__filename)).c(create);
+(module.exports = require("marko").c(__filename)).c(create, {
+    tags: [
+        {
+            type: "include",
+            template: require.resolve("./target.marko")
+          }
+      ]
+  });
