@@ -180,10 +180,10 @@ var myIncludeTarget = require('./my-include-target.marko');
 var anotherIncludeTarget = require('./another-include-target.marko');
 
 template.render({
-		myIncludeTarget: myIncludeTarget,
-		anotherIncludeTarget: anotherIncludeTarget
-	},
-	...);
+    myIncludeTarget: myIncludeTarget,
+    anotherIncludeTarget: anotherIncludeTarget
+  },
+  ...);
 ```
 
 And then in your template:
@@ -251,9 +251,9 @@ nameUpper and nameLower will be undefined here
 
 Any element or fragment of HTML can be made conditional using the following directives:
 
--	`if`
--	`else-if`
--	`else`
+- `if`
+- `else-if`
+- `else`
 
 *Applied as attributes:*
 
@@ -718,6 +718,25 @@ The above macro can then be invoked as part of any expression. Alternatively, th
     <!-- Or, using named attributes: -->
     <greeting name="Frank" count=20/>
 </p>
+```
+
+### macro-body
+
+You can also place a <macro-body> tag within your macro to accept wrapped macro body content.
+
+```xml
+<macro step(number)>
+    <div class="step">
+        <span class="step-number">Step ${number}:</span>
+        <macro-body/>
+    </div>
+</macro>
+
+<step(1)>First do this</step>
+<step(2)>Then do this</step>
+<step(3)>
+    Lastly, do this <em>slightly</em> complicated thing...
+</step>
 ```
 
 
